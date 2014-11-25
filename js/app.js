@@ -1,19 +1,45 @@
+
+// Contains general information about the
+// grid defined by the background art
+var rows = {
+	// An enemy or player sprite with this y value will
+	// be in the water row
+	waterRow1: -20,
+	
+	// An enemy or player sprite with this y value will
+	// be in the first (top) stone row
+	stoneRow1: -20 + (83),
+	
+	// An enemy or player sprite with this y value will
+	// be in the second (middle) stone row
+	stoneRow2: -20 + (83 * 2),
+	
+	// An enemy or player sprite with this y value will
+	// be in the third (bottom) stone row
+	stoneRow3: -20 + (83 * 3),
+	
+	// An enemy or player sprite with this y value will
+	// be in the first (top) grass row
+	grassRow1: -20 + (83 * 4),
+	
+	// An enemy or player sprite with this y value will
+	// be in the second (bottom) grass row
+	grassRow1: -20 + (83 * 5)
+};
+
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     
     // The horizontal location of the enemy on the
     // canvas in pixels.
-    this.x = 50;
+    this.x = 101;
     
     // The vertical location of the enemy on the
     // canvas in pixels.
-    this.y = 50;
+    this.y = rows.stoneRow2;
 }
 
 // Update the enemy's position, required method for game
