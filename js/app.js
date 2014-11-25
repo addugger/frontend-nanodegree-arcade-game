@@ -24,7 +24,11 @@ var rows = {
 	
 	// An enemy or player sprite with this y value will
 	// be in the second (bottom) grass row
-	grassRow1: -20 + (83 * 5)
+	grassRow1: -20 + (83 * 5),
+	
+	// Used to indicate a sprite is not currently on the
+	// screen
+	offScren: -100
 };
 
 // Enemies our player must avoid
@@ -35,11 +39,11 @@ var Enemy = function() {
     
     // The horizontal location of the enemy on the
     // canvas in pixels.
-    this.x = 101;
+    this.x = 0;
     
     // The vertical location of the enemy on the
     // canvas in pixels.
-    this.y = rows.stoneRow2;
+    this.y = rows.offScreen;
 }
 
 // Update the enemy's position, required method for game
