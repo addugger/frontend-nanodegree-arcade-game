@@ -1,3 +1,12 @@
+function randomValFromInterval(min,max)
+{
+    return Math.random()*(max-min+1)+min;
+}
+
+function getEnemySpeed()
+{
+	return randomValFromInterval(1, 3) * 75;
+}
 
 // Contains general information about the
 // grid defined by the background art
@@ -28,7 +37,7 @@ var grid = {
 	
 	// Horizontal distance used to indicate a sprite is off
 	// the screen on the left side
-	offScrenLeft: -101,
+	offScreenLeft: -101,
 	
 	//column numbers are 0 indexed from left to right
 	
@@ -51,11 +60,10 @@ var grid = {
 	// An enemy or player sprite with this x value will
 	// be in the first column
 	row4: 101 * 4
-
 };
 
 // Enemies our player must avoid
-var Enemy = function(x, row) {
+var Enemy = function(x, row, speed) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -67,14 +75,16 @@ var Enemy = function(x, row) {
     // The vertical location of the enemy on the
     // canvas in pixels.
     this.y = row;
+    
+    // The "speed" at which the enemy will move
+    // across the screen
+    this.speed = speed;
 }
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    this.x = this.x + (this.speed * dt);
 }
 
 // Draw the enemy on the screen, required method for game
@@ -90,7 +100,13 @@ Enemy.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy(grid.row1, grid.stoneRow3)];
+var allEnemies = [
+  new Enemy(
+		  grid.offScreenLeft,
+		  grid.stoneRow3,
+		  getEnemySpeed()
+  )
+];
 
 
 
@@ -104,5 +120,5 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    //player.handleInput(allowedKeys[e.keyCode]);
 });
