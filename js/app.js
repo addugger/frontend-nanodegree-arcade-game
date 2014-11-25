@@ -1,7 +1,7 @@
 
 // Contains general information about the
 // grid defined by the background art
-var rows = {
+var grid = {
 	// An enemy or player sprite with this y value will
 	// be in the water row
 	waterRow1: -20,
@@ -26,24 +26,47 @@ var rows = {
 	// be in the second (bottom) grass row
 	grassRow1: -20 + (83 * 5),
 	
-	// Used to indicate a sprite is not currently on the
-	// screen
-	offScren: -100
+	// Horizontal distance used to indicate a sprite is off
+	// the screen on the left side
+	offScrenLeft: -101,
+	
+	//column numbers are 0 indexed from left to right
+	
+	// An enemy or player sprite with this x value will
+	// be in the first column
+	row0: 101 * 0,
+	
+	// An enemy or player sprite with this x value will
+	// be in the first column
+	row1: 101 * 1,
+	
+	// An enemy or player sprite with this x value will
+	// be in the first column
+	row2: 101 * 2,
+	
+	// An enemy or player sprite with this x value will
+	// be in the first column
+	row3: 101 * 3,
+	
+	// An enemy or player sprite with this x value will
+	// be in the first column
+	row4: 101 * 4
+
 };
 
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x, row) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
     
     // The horizontal location of the enemy on the
     // canvas in pixels.
-    this.x = 0;
+    this.x = x;
     
     // The vertical location of the enemy on the
     // canvas in pixels.
-    this.y = rows.offScreen;
+    this.y = row;
 }
 
 // Update the enemy's position, required method for game
@@ -67,7 +90,7 @@ Enemy.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy()];
+var allEnemies = [new Enemy(grid.row1, grid.stoneRow3)];
 
 
 
