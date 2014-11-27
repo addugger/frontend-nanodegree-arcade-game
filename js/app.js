@@ -26,6 +26,13 @@ function getEnemyWait()
 // Contains general information about the
 // grid defined by the background art
 var grid = {
+
+	// width of grid cell in pixels
+	cellWidth: 83,
+	
+	// height of grid cell in pixels
+	cellHeight: 101,
+
 	// An enemy or player sprite with this y value will
 	// be in the water row
 	waterRow1: -20,
@@ -168,6 +175,25 @@ Player.prototype.update = function(dt) {
 	
 }
 
+Player.prototype.handleInput = function(key) {
+	if (key == "down")
+	{
+		this.y = this.y + grid.cellHeight;
+	}
+	else if (key == "up")
+	{
+		this.y = this.y - grid.cellHeight;
+	}
+	else if (key == "right")
+	{
+		this.x = this.x + grid.cellWidth;
+	}
+	else if (key = "left")
+	{
+		this.x = this.x - grid.cellWidth;
+	}	
+}
+
 Player.prototype.init = function() {
 	return new Player(
 		grid.col2,
@@ -203,5 +229,5 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    //player.handleInput(allowedKeys[e.keyCode]);
+    player.handleInput(allowedKeys[e.keyCode]);
 });
