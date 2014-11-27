@@ -48,7 +48,7 @@ var grid = {
 	
 	// An enemy or player sprite with this y value will
 	// be in the second (bottom) grass row
-	grassRow1: -20 + (83 * 5),
+	grassRow2: -20 + (83 * 5),
 	
 	// Horizontal distance used to indicate a sprite is off
 	// the screen on the left side
@@ -62,23 +62,23 @@ var grid = {
 	
 	// An enemy or player sprite with this x value will
 	// be in the first column
-	row0: 101 * 0,
+	col0: 101 * 0,
 	
 	// An enemy or player sprite with this x value will
-	// be in the first column
-	row1: 101 * 1,
+	// be in the second column
+	col1: 101 * 1,
 	
 	// An enemy or player sprite with this x value will
-	// be in the first column
-	row2: 101 * 2,
+	// be in the third column
+	col2: 101 * 2,
 	
 	// An enemy or player sprite with this x value will
-	// be in the first column
-	row3: 101 * 3,
+	// be in the fourth column
+	col3: 101 * 3,
 	
 	// An enemy or player sprite with this x value will
-	// be in the first column
-	row4: 101 * 4
+	// be in the fifth column
+	col4: 101 * 4
 };
 
 // Enemies our player must avoid
@@ -146,7 +146,34 @@ Enemy.prototype.reset = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function(x, row) {
+	// The image/sprite for our player
+    this.sprite = 'images/char-boy.png';
+    
+    // The horizontal location of the player on the
+    // canvas in pixels.
+    this.x = x;
+    
+    // The vertical location of the player on the
+    // canvas in pixels.
+    this.y = row;
+}
 
+// Draw the player on the screen
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Player.prototype.update = function(dt) {
+	
+}
+
+Player.prototype.init = function() {
+	return new Player(
+		grid.col2,
+		grid.grassRow2
+	);
+}
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
@@ -164,7 +191,7 @@ for (var i = 0; i < 7; i++)
 	);
 }
 
-
+var player = Player.prototype.init();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
