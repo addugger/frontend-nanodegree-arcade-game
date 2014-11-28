@@ -176,19 +176,27 @@ Player.prototype.update = function(dt) {
 }
 
 Player.prototype.handleInput = function(key) {
-	if (key == "down")
+	// If key is down and player is not already at
+	// the bottom of the scren
+	if (key == "down" && this.y < grid.grassRow2)
 	{
 		this.y = this.y + grid.cellHeight;
 	}
-	else if (key == "up")
+	// If key is up and player is not already at the
+	// top of the screen
+	else if (key == "up" && this.y > grid.waterRow1)
 	{
 		this.y = this.y - grid.cellHeight;
 	}
-	else if (key == "right")
+	// If key is right and player is not already at
+	// the right side of the screen
+	else if (key == "right" && this.x < grid.col4)
 	{
 		this.x = this.x + grid.cellWidth;
 	}
-	else if (key = "left")
+	// If key is left and player is not already at
+	// the left side of the screen
+	else if (key == "left" && this.x > grid.col0)
 	{
 		this.x = this.x - grid.cellWidth;
 	}	
