@@ -15,7 +15,7 @@ function getEnemySpeed()
 
 function getEnemyRow()
 {
-	return grid["stoneRow" + randomIntFromInterval(1, 3)];
+	return Enemy.rows["stoneRow" + randomIntFromInterval(1, 3)];
 }
 
 function getEnemyWait()
@@ -109,7 +109,42 @@ var Enemy = function(x, row, speed, waitTime) {
     // For when an enemy is off-screen.   Determines how
     // long to wait before moving the enemy across the screen
     this.waitTime = waitTime;
-}
+};
+
+//Contains enemy row locations in pixels
+Enemy.rows = {
+ 	// an enemy with this y value will
+ 	// be in the water row
+ 	waterRow1: -20,
+ 	
+ 	// an enemy with this y value will
+ 	// be in the first (top) stone row
+ 	stoneRow1: -20 + (83),
+ 	
+ 	// an enemy with this y value will
+ 	// be in the second (middle) stone row
+ 	stoneRow2: -20 + (83 * 2),
+ 	
+ 	// an enemy with this y value will
+ 	// be in the third (bottom) stone row
+ 	stoneRow3: -20 + (83 * 3),
+ 	
+ 	// an enemy with this y value will
+ 	// be in the first (top) grass row
+ 	grassRow1: -20 + (83 * 4),
+ 	
+ 	// an enemy with this y value will
+ 	// be in the second (bottom) grass row
+ 	grassRow2: -20 + (83 * 5),
+ 	
+ 	// Horizontal distance used to indicate
+ 	// a sprite is off the screen on the left side
+ 	offScreenLeft: -101,
+ 	
+ 	// Vertical distance used to indicate
+ 	// a sprite is off the screen on the right side
+ 	offScreenRight: 101 * 5,
+};
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -123,7 +158,7 @@ Enemy.prototype.update = function(dt) {
 	else
 	{
 		//check if enemy is off screen on the right
-		if (this.x >= grid.offScreenRight)
+		if (this.x >= Enemy.rows.offScreenRight)
 		{
 			this.reset();
 		}
@@ -144,7 +179,7 @@ Enemy.prototype.render = function() {
 // and sets waitTime to 0, so it starts across the page
 // right away
 Enemy.prototype.reset = function() {
-	this.x = grid.offScreenLeft;
+	this.x = Enemy.rows.offScreenLeft;
 	this.y = getEnemyRow();
 	this.speed = getEnemySpeed();
 	this.waitTime = 0;
@@ -209,7 +244,7 @@ for (var i = 0; i < 7; i++)
 {
 	allEnemies.push(
 		new Enemy(
-			grid.offScreenLeft,
+			Enemy.rows.offScreenLeft,
 			getEnemyRow(),
 			getEnemySpeed(),
 			getEnemyWait()
