@@ -15,7 +15,7 @@ function getEnemySpeed()
 
 function getEnemyRow()
 {
-	return Enemy.rows["stoneRow" + randomIntFromInterval(1, 3)];
+	return grid["stoneRow" + randomIntFromInterval(1, 3)];
 }
 
 function getEnemyWait()
@@ -24,68 +24,68 @@ function getEnemyWait()
 }
 
 // Contains general information about the
-// grid defined by the background art
+// grid defined by the background art in
+// pixels
 var grid = {
-
 	// width of grid cell in pixels
-	cellWidth: 83,
+	cellWidth: 101,
 	
 	// height of grid cell in pixels
-	cellHeight: 101,
+	cellHeight: 83,
+	
+	// a sprite with this y value will
+ 	// be in the water row
+ 	waterRow1: -10,
+ 	
+ 	// a sprite with this y value will
+ 	// be in the first (top) stone row
+ 	stoneRow1: -20 + (83),
+ 	
+ 	// a sprite with this y value will
+ 	// be in the second (middle) stone row
+ 	stoneRow2: -20 + (83 * 2),
+ 	
+ 	// a sprite with this y value will
+ 	// be in the third (bottom) stone row
+ 	stoneRow3: -20 + (83 * 3),
+ 	
+ 	// a sprite with this y value will
+ 	// be in the first (top) grass row
+ 	grassRow1: -20 + (83 * 4),
+ 	
+ 	// a sprite with this y value will
+ 	// be in the second (bottom) grass row
+ 	grassRow2: -20 + (83 * 5),
+ 	
+ 	// Horizontal distance used to indicate
+ 	// a sprite is off the screen on the left side
+ 	offScreenLeft: -101,
+ 	
+ 	// Vertical distance used to indicate
+ 	// a sprite is off the screen on the right side
+ 	offScreenRight: 101 * 5,
+ 	
+ 	//columns are 0 indexed from left to right
+ 	
+ 	// Horizontal location of sprite is the first
+ 	// row on the left
+ 	col0: 0,
 
-	// An enemy or player sprite with this y value will
-	// be in the water row
-	waterRow1: -20,
+	//Horizontal location of sprite is the second
+	// row from the left
+	col1: 0 + 101,
 	
-	// An enemy or player sprite with this y value will
-	// be in the first (top) stone row
-	stoneRow1: -20 + (83),
+	//Horizontal location of sprite is the third
+	// row from the left
+	col2: 0 + (101 * 2),
 	
-	// An enemy or player sprite with this y value will
-	// be in the second (middle) stone row
-	stoneRow2: -20 + (83 * 2),
+	//Horizontal location of sprite is the fourth
+	// row from the left
+	col3: 0 + (101 * 3),
 	
-	// An enemy or player sprite with this y value will
-	// be in the third (bottom) stone row
-	stoneRow3: -20 + (83 * 3),
-	
-	// An enemy or player sprite with this y value will
-	// be in the first (top) grass row
-	grassRow1: -20 + (83 * 4),
-	
-	// An enemy or player sprite with this y value will
-	// be in the second (bottom) grass row
-	grassRow2: -20 + (83 * 5),
-	
-	// Horizontal distance used to indicate a sprite is off
-	// the screen on the left side
-	offScreenLeft: -101,
-	
-	// Vertical distance used to indicate a sprite is off
-	// the screen on the right side
-	offScreenRight: 101 * 5,
-	
-	//column numbers are 0 indexed from left to right
-	
-	// An enemy or player sprite with this x value will
-	// be in the first column
-	col0: 101 * 0,
-	
-	// An enemy or player sprite with this x value will
-	// be in the second column
-	col1: 101 * 1,
-	
-	// An enemy or player sprite with this x value will
-	// be in the third column
-	col2: 101 * 2,
-	
-	// An enemy or player sprite with this x value will
-	// be in the fourth column
-	col3: 101 * 3,
-	
-	// An enemy or player sprite with this x value will
-	// be in the fifth column
-	col4: 101 * 4
+	//Horizontal location of sprite is the far
+	// right row
+	col4: 0 + (101 * 4)
 };
 
 // Enemies our player must avoid
@@ -111,41 +111,6 @@ var Enemy = function(x, row, speed, waitTime) {
     this.waitTime = waitTime;
 };
 
-//Contains enemy row locations in pixels
-Enemy.rows = {
- 	// an enemy with this y value will
- 	// be in the water row
- 	waterRow1: -20,
- 	
- 	// an enemy with this y value will
- 	// be in the first (top) stone row
- 	stoneRow1: -20 + (83),
- 	
- 	// an enemy with this y value will
- 	// be in the second (middle) stone row
- 	stoneRow2: -20 + (83 * 2),
- 	
- 	// an enemy with this y value will
- 	// be in the third (bottom) stone row
- 	stoneRow3: -20 + (83 * 3),
- 	
- 	// an enemy with this y value will
- 	// be in the first (top) grass row
- 	grassRow1: -20 + (83 * 4),
- 	
- 	// an enemy with this y value will
- 	// be in the second (bottom) grass row
- 	grassRow2: -20 + (83 * 5),
- 	
- 	// Horizontal distance used to indicate
- 	// a sprite is off the screen on the left side
- 	offScreenLeft: -101,
- 	
- 	// Vertical distance used to indicate
- 	// a sprite is off the screen on the right side
- 	offScreenRight: 101 * 5,
-};
-
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -158,7 +123,7 @@ Enemy.prototype.update = function(dt) {
 	else
 	{
 		//check if enemy is off screen on the right
-		if (this.x >= Enemy.rows.offScreenRight)
+		if (this.x >= grid.offScreenRight)
 		{
 			this.reset();
 		}
@@ -179,7 +144,7 @@ Enemy.prototype.render = function() {
 // and sets waitTime to 0, so it starts across the page
 // right away
 Enemy.prototype.reset = function() {
-	this.x = Enemy.rows.offScreenLeft;
+	this.x = grid.offScreenLeft;
 	this.y = getEnemyRow();
 	this.speed = getEnemySpeed();
 	this.waitTime = 0;
@@ -231,7 +196,7 @@ Player.prototype.handleInput = function(key) {
 
 Player.prototype.init = function() {
 	return new Player(
-		grid.col2,
+		grid.col0,
 		grid.grassRow2
 	);
 }
@@ -244,7 +209,7 @@ for (var i = 0; i < 7; i++)
 {
 	allEnemies.push(
 		new Enemy(
-			Enemy.rows.offScreenLeft,
+			grid.offScreenLeft,
 			getEnemyRow(),
 			getEnemySpeed(),
 			getEnemyWait()
