@@ -186,8 +186,36 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-Player.prototype.update = function(dt) {
-	
+// Check if the player has died and update
+// accordingly
+Player.prototype.checkDeath = function(dt) {
+	var playerX = this.x;
+	var playerY = this.y;
+	// First, check if player is in the water
+	if (playerY <= grid.waterRow1)
+	{
+		player = this.init();
+	}
+	else
+	{
+		// Loop through all the enemies and check
+		// if any are in the same space as the player
+		for (var i in allEnemies)
+		{
+			var enemy = allEnemies[i];
+			// First check if the enemy is in the same row
+			// as the player
+			if (enemy.y == playerY)
+			{
+				// Then check if the enemy has collided with the
+				// player
+				if (enemy.x >= playerX - 50 && enemy.x <= playerX + 50)
+				{
+					player = this.init();
+				}
+			}
+		}
+	}
 }
 
 // Handles user input to move the player around the screen
