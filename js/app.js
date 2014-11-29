@@ -1,23 +1,30 @@
+// Returns a random float between min and max (inclusive)
 function randomValFromInterval(min, max)
 {
     return Math.random()*(max-min+1)+min;
 }
 
+// Returns a random integer between min and max (inclusive)
 function randomIntFromInterval(min, max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
+// Returns a random enemy "speed" value
 function getEnemySpeed()
 {
 	return randomValFromInterval(1, 3) * 75;
 }
 
+// Returns a random stone row y value
 function getEnemyRow()
 {
 	return grid["stoneRow" + randomIntFromInterval(1, 3)];
 }
 
+// Returns a random amount of delay time. Used to
+// determine how long an enemy must wait before
+// beginning it's movement across the screen.
 function getEnemyWait()
 {
 	return randomValFromInterval(.2, 2);
@@ -140,6 +147,16 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+// Initializes an enemy object
+Enemy.prototype.init = function() {
+	return new Enemy(
+			grid.offScreenLeft,
+			getEnemyRow(),
+			getEnemySpeed(),
+			getEnemyWait()
+		)
+}
+
 // Reset enemy object to beginning and get new speed, row,
 // and sets waitTime to 0, so it starts across the page
 // right away
@@ -150,9 +167,7 @@ Enemy.prototype.reset = function() {
 	this.waitTime = 0;
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
+// Object representing our "frog" (player character)
 var Player = function(x, row) {
 	// The image/sprite for our player
     this.sprite = 'images/char-boy.png';
@@ -175,6 +190,7 @@ Player.prototype.update = function(dt) {
 	
 }
 
+// Handles user input to move the player around the screen
 Player.prototype.handleInput = function(key) {
 	// If key is down and player is not already at
 	// the bottom of the scren
@@ -202,29 +218,22 @@ Player.prototype.handleInput = function(key) {
 	}	
 }
 
+// Initializes the player character
 Player.prototype.init = function() {
 	return new Player(
-		grid.col0,
+		grid.col2,
 		grid.grassRow2
 	);
 }
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// allEnemies is an array that holds all of the enemies
 var allEnemies = [];
 for (var i = 0; i < 7; i++)
 {
-	allEnemies.push(
-		new Enemy(
-			grid.offScreenLeft,
-			getEnemyRow(),
-			getEnemySpeed(),
-			getEnemyWait()
-		)
-	);
+	allEnemies.push(Enemy.prototype.init());
 }
 
+// player holds the Player object
 var player = Player.prototype.init();
 
 // This listens for key presses and sends the keys to your
