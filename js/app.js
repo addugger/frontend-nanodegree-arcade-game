@@ -1,39 +1,60 @@
-// Returns a random float between min and max (inclusive)
+/** 
+ * Returns a random float between min and max (inclusive).
+ * @param {number} min Lower bound that can be returned.
+ * @param {number} max Upper bound that can be returned.
+ * @returns {Number} Random float between min and max.
+ */
 function randomValFromInterval(min, max)
 {
-    return Math.random()*(max-min+1)+min;
+    return Math.random()*(max-min+1) +min;
 }
 
-// Returns a random integer between min and max (inclusive)
+/** 
+ * Returns a random integer between min and max (inclusive).
+ * @param {number} min Lower bound that can be returned.
+ * @param {number} max Upper bound that can be returned.
+ * @returns {Number} Random int between min and max.
+ */
 function randomIntFromInterval(min, max)
 {
     return Math.floor(Math.random()*(max-min+1)+min);
 }
 
-// Returns a random enemy "speed" value
+/**
+ * Returns a random enemy "speed" value.
+ * @returns {Number} Random enemy speed.
+ */
 function getEnemySpeed()
 {
 	return randomValFromInterval(1, 3) * 75;
 }
 
-// Returns a random stone row y value
+/**
+ * Returns a random stone row y value.
+ * @returns {number} Y value on canvas corresponding to one of the
+ *     stone rows on the grid.
+ */
 function getEnemyRow()
 {
-	return grid["stoneRow" + randomIntFromInterval(1, 3)];
+	return GRID["stoneRow" + randomIntFromInterval(1, 3)];
 }
 
-// Returns a random amount of delay time. Used to
-// determine how long an enemy must wait before
-// beginning it's movement across the screen.
+/**
+ * Returns a random amount of delay time. Used to determine how long
+ * an enemy must wait before beginning it's movement across the screen.
+ * @return {Number} Random enemy delay time.
+ */
 function getEnemyWait()
 {
 	return randomValFromInterval(.2, 2);
 }
 
-// Contains general information about the
-// grid defined by the background art in
-// pixels
-var grid = {
+/**
+ * Contains general information about the grid defined by the background
+ * art in pixels.
+ * @const
+ */
+var GRID = {
 	// width of grid cell in pixels
 	cellWidth: 101,
 	
@@ -72,17 +93,17 @@ var grid = {
  	// a sprite is off the screen on the right side
  	offScreenRight: 101 * 5,
  	
- 	//columns are 0 indexed from left to right
+ 	// Columns are 0 indexed from left to right
  	
  	// Horizontal location of sprite is the first
  	// row on the left
  	col0: 0,
 
-	//Horizontal location of sprite is the second
+	// Horizontal location of sprite is the second
 	// row from the left
 	col1: 0 + 101,
 	
-	//Horizontal location of sprite is the third
+	// Horizontal location of sprite is the third
 	// row from the left
 	col2: 0 + (101 * 2),
 	
@@ -90,12 +111,14 @@ var grid = {
 	// row from the left
 	col3: 0 + (101 * 3),
 	
-	//Horizontal location of sprite is the far
+	// Horizontal location of sprite is the far
 	// right row
 	col4: 0 + (101 * 4)
 };
 
-// Enemies our player must avoid
+/** 
+ * Enemies our player must avoid
+ */
 var Enemy = function(x, row, speed, waitTime) {
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -118,8 +141,10 @@ var Enemy = function(x, row, speed, waitTime) {
     this.waitTime = waitTime;
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+/**
+ * Update the enemy's position.
+ * @param {number} dt A time delta between ticks.
+ */
 Enemy.prototype.update = function(dt) {
 	//if wait time is > 0, update wait time
 	if (this.waitTime > 0)
@@ -130,7 +155,7 @@ Enemy.prototype.update = function(dt) {
 	else
 	{
 		//check if enemy is off screen on the right
-		if (this.x >= grid.offScreenRight)
+		if (this.x >= GRID.offScreenRight)
 		{
 			this.reset();
 		}
@@ -142,32 +167,40 @@ Enemy.prototype.update = function(dt) {
 	}
 }
 
-// Draw the enemy on the screen, required method for game
+/**
+ * Draw the enemy on the canvas.
+ */
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Initializes an enemy object
+/**
+ * Initializes a new enemy object off the screen to the left, on a
+ * random row, with a random speed and a random wait time.
+ */
 Enemy.prototype.init = function() {
 	return new Enemy(
-			grid.offScreenLeft,
+			GRID.offScreenLeft,
 			getEnemyRow(),
 			getEnemySpeed(),
 			getEnemyWait()
 		)
 }
 
-// Reset enemy object to beginning and get new speed, row,
-// and sets waitTime to 0, so it starts across the page
-// right away
+/**
+ * Reset enemy object to left of the screen with a new speed and row, and sets
+ * waitTime to 0, so it starts across the page immediately.
+ */
 Enemy.prototype.reset = function() {
-	this.x = grid.offScreenLeft;
+	this.x = GRID.offScreenLeft;
 	this.y = getEnemyRow();
 	this.speed = getEnemySpeed();
 	this.waitTime = 0;
 }
 
-// Object representing our "frog" (player character)
+/**
+ * Object representing our "frog" (player character)
+ */
 var Player = function(x, row) {
 	// The image/sprite for our player
     this.sprite = 'images/char-boy.png';
@@ -181,18 +214,21 @@ var Player = function(x, row) {
     this.y = row;
 }
 
-// Draw the player on the screen
+/**
+ * Draw the player on the canvas.
+ */
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Check if the player has died and update
-// accordingly
+/**
+ * Check if the player has died and update the player accordingly.
+ */
 Player.prototype.checkDeath = function(dt) {
 	var playerX = this.x;
 	var playerY = this.y;
 	// First, check if player is in the water
-	if (playerY <= grid.waterRow1)
+	if (playerY <= GRID.waterRow1)
 	{
 		player = this.init();
 	}
@@ -218,50 +254,59 @@ Player.prototype.checkDeath = function(dt) {
 	}
 }
 
-// Handles user input to move the player around the screen
+/**
+ * Handles user input to move the player around the screen.
+ */
 Player.prototype.handleInput = function(key) {
 	// If key is down and player is not already at
 	// the bottom of the scren
-	if (key == "down" && this.y < grid.grassRow2)
+	if (key == "down" && this.y < GRID.grassRow2)
 	{
-		this.y = this.y + grid.cellHeight;
+		this.y = this.y + GRID.cellHeight;
 	}
 	// If key is up and player is not already at the
 	// top of the screen
-	else if (key == "up" && this.y > grid.waterRow1)
+	else if (key == "up" && this.y > GRID.waterRow1)
 	{
-		this.y = this.y - grid.cellHeight;
+		this.y = this.y - GRID.cellHeight;
 	}
 	// If key is right and player is not already at
 	// the right side of the screen
-	else if (key == "right" && this.x < grid.col4)
+	else if (key == "right" && this.x < GRID.col4)
 	{
-		this.x = this.x + grid.cellWidth;
+		this.x = this.x + GRID.cellWidth;
 	}
 	// If key is left and player is not already at
 	// the left side of the screen
-	else if (key == "left" && this.x > grid.col0)
+	else if (key == "left" && this.x > GRID.col0)
 	{
-		this.x = this.x - grid.cellWidth;
+		this.x = this.x - GRID.cellWidth;
 	}	
 }
 
-// Initializes the player character
+/**
+ * Initializes a player character starting in the bottom center of
+ * the grid.
+ */
 Player.prototype.init = function() {
 	return new Player(
-		grid.col2,
-		grid.grassRow2
+		GRID.col2,
+		GRID.grassRow2
 	);
 }
 
-// allEnemies is an array that holds all of the enemies
+/**
+ * An array that holds all of the enemies.
+ */
 var allEnemies = [];
 for (var i = 0; i < 7; i++)
 {
 	allEnemies.push(Enemy.prototype.init());
 }
 
-// player holds the Player object
+/**
+ * The Player object that is controlled by the user.
+ */
 var player = Player.prototype.init();
 
 // This listens for key presses and sends the keys to your
